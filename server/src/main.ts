@@ -2,11 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as dotenv from 'dotenv';
+import { Logger } from '@nestjs/common';
+
+dotenv.config();
 
 async function bootstrap() {
   const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
 
+const logger = new Logger('AppBootstrap');
   app.setGlobalPrefix('api');
   app.enableCors({
     origin: 'http://localhost:5173',
@@ -22,10 +27,10 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('/api/doc', app, document);
 
   await app.listen(PORT, () => {
-    console.log(`Server started on port: ${PORT}`);
+    logger.log(`Server started on port: ${PORT}`);
   });
 }
 bootstrap();

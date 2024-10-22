@@ -1,0 +1,26 @@
+.container {
+}
+.header {
+  font-size: 45px;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+}
+.header::after {
+    content: '';
+    position: absolute;
+    left: 10;
+    right: 5;
+    bottom: -2px; 
+    height: 1px;
+    width: 15%;
+    background-color: black;
+    z-index: -1;
+}
+.content {
+  height: 100vh;
+}
+.footer {
+}

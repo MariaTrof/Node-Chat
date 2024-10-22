@@ -1,15 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty({ description: 'USER NAME', nullable: false })
+  @IsString()
+  @IsNotEmpty({ message: 'Введите имя юзера' })
+  @ApiProperty({ description: 'Имя пользователя', example: 'User-Test' })
   readonly user_name: string;
 
-  @ApiProperty({ description: 'PASSWORD', nullable: false })
+  @IsString()
+  @IsNotEmpty({ message: 'Введите пароль' })
+  @ApiProperty({ description: 'Пароль пользователя', example: 'test12' })
   readonly user_password: string;
 
-  @ApiProperty({ description: 'PROFILE PICTURE', nullable: true })
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ description: 'Фото профиля', example: 'test12.png' })
   readonly profile_picture: string;
 
-  @ApiProperty({ description: 'IS ADMIN', default: false, nullable: false })
-  readonly is_admin: boolean = false;
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({ description: 'Админ статус', example: 'false' })
+  readonly is_admin: boolean;
 }

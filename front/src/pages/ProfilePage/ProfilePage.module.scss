@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.content {
+  width: 40%;
+  padding: 25px;
+  font-size: 25px;
+  display: grid;
+  place-items: center;
+}
+.box {
+  padding: 15px;
+}
+.title{
+    padding: 10px 15px;
+}
+.links {
+  font-size: 25px;
+  font-weight: 100;
+  padding: 10px;
+}
+.img{
+    width: 180px;
+    height: 180px;
+}
+.inpt{}
+.btn{
+    margin: 5px;
+}
+.small_title{
+    font-size: 20px;  
+    padding: 5px;
+}

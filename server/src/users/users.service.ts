@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs'; 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -10,16 +11,39 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<Users> {
     try {
-      const user = await this.userRepository.create(createUserDto);
+      const user = await this.userRepository.create({
+        ...createUserDto,
+      });
       return user;
     } catch (error) {
       console.log(error);
-      console.error('Error creating user:', error); // Логируем ошибку
+      console.error('Error creating user:', error);
+      console.log('Данные перед регистрацией:', createUserDto);
       throw new HttpException(
         'Не удалось создать пользователя',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  private async hashPassword(user_password: string): Promise<string> {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(user_password, salt);
+  }
+
+  async validateUser(
+    user_name: string,
+    user_password: string,
+  ): Promise<Users | null> {
+    const user = await this.getByName(user_name);
+    if (user && (await bcrypt.compare(user_password, user.user_password))) {
+      return user;
+    }
+    return null;
+  }
+
+  async updateRefreshToken(id: number, hashedRT: string) {
+    await this.userRepository.update({ hashedRT }, { where: { id } });
   }
 
   async findAll(): Promise<Users[]> {
@@ -66,11 +90,20 @@ export class UsersService {
           HttpStatus.NOT_FOUND,
         );
       }
-      await user.update(updateUserDto);
+
+      const updatedData: Partial<UpdateUserDto> = { ...updateUserDto };
+
+      if (updateUserDto.user_password) {
+        updatedData.user_password = await this.hashPassword(
+          updateUserDto.user_password,
+        );
+      }
+
+      await user.update(updatedData);
       return user;
     } catch (error) {
       console.log(error);
-      console.error('Error creating user:', error);
+      console.error('Error updating user:', error);
       throw new HttpException(
         'Ошибка при изменении пользователя',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -112,6 +145,25 @@ export class UsersService {
       console.error('Error creating user:', error);
       throw new HttpException(
         'Ошибка при получении пользователя по user_name',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async activateUser(id: number) {
+    try {
+      const user = await this.userRepository.findByPk(id);
+      if (!user) {
+        throw new HttpException(
+          `Пользователь c id: ${id} не найден`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      user.isActivated = true;
+      await user.save();
+    } catch (error) {
+      throw new HttpException(
+        `Ошибка при активации`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

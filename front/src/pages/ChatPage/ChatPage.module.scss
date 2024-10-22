@@ -1,0 +1,48 @@
+.container {
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  padding: 5px;
+}
+
+.box {
+  display: flex;
+  width: 80%;
+  height: 80vh;
+  border: 1px solid rgb(181, 219, 219);
+  background-color: white;
+}
+.small_title {
+  background-color: rgb(181, 219, 219);
+  margin-bottom: 10px;
+  font-size: 20px;
+  width: 100%;
+  height: 5vh;
+  padding: 5px;
+}
+.groups {
+  flex: 1;
+  border-right: 2px solid rgb(174, 208, 208);
+  height: 80vh;
+  background-color: rgb(224, 235, 235);
+}
+.messages {
+  flex: 3;
+  height: 80vh;
+}
+
+.conf {
+  flex: 1;
+  height: 80vh;
+  background-color: rgb(232, 252, 252);
+  border-left: 2px solid rgb(174, 208, 208);
+}

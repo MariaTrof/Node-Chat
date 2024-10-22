@@ -4,8 +4,8 @@ import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ description: 'PASSWORD', nullable: false })
-  readonly user_password?: string;
+  user_password?: string;
 
   @ApiProperty({ description: 'PROFILE PICTURE', nullable: true })
-  readonly profile_picture?: string;
+  profile_picture?: string;
 }

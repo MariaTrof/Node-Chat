@@ -1,0 +1,33 @@
+.addMessage {
+	max-width: 500px;
+	display: flex;
+	flex-direction: row;
+	list-style: none;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0px 1px 2px 0px #dfdfdf;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 20px;
+	line-height: 1;
+	
+	&:hover {
+		box-shadow: 0px 2px 4px 0px #dfdfdf;
+	}
+}
+.form {
+	max-width: 500px;
+	display: flex;
+	height: 40px;
+	flex-direction: row;
+	list-style: none;
+	justify-content: center;
+	font-size: 20px;
+	line-height: 1;
+}
+.iconContainer {
+	padding: 8px;
+	width: 24px;
+	height: 24px;
+	line-height: 1;
+}
